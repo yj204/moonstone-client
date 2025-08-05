@@ -4,14 +4,11 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack, useNavigation } from "expo-router";
-
+import { useNavigation } from "expo-router";
 import "react-native-reanimated";
 import { useState } from "react";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Drawer } from "expo-router/drawer";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
   const [loaded] = useFonts({
@@ -26,30 +23,36 @@ export default function RootLayout() {
     return null;
   }
 
-  
-
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-      {/* <Drawer>
+      <Drawer>
         <Drawer.Screen
-          name="index" // This is the name of the page and must match the url from root
+          name="(album)" // This is the name of the page and must match the url from root
           options={{
-            drawerLabel: 'Home',
-            title: 'overview',
+            drawerLabel: "Album",
+            title: "overview",
           }}
         />
         <Drawer.Screen
-          name="user/[id]" // This is the name of the page and must match the url from root
+          name="feeding" // This is the name of the page and must match the url from root
           options={{
-            drawerLabel: 'User',
-            title: 'overview',
+            drawerLabel: "User",
+            title: "overview",
           }}
         />
-      </Drawer> */}
-       
-      </GestureHandlerRootView>
+        {/* <Drawer.Screen
+          name="+not-found" // This is the name of the page and must match the url from root
+          options={{
+            drawerLabel: "User",
+            title: "overview",
+            drawerItemStyle: { display: 'none' },
+          }}
+        /> */}
+      </Drawer>
     </ThemeProvider>
   );
 }
 
+export const unstable_settings = {
+  initialRouteName: 'index', // 자동 등록 방지
+};
