@@ -1,5 +1,6 @@
 const { platformSelect } = require("nativewind/theme");
  
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   theme: {
     extend: {
@@ -13,9 +14,11 @@ module.exports = {
     },
   },
   content: [
+    './app/**/*.{js,ts,jsx,tsx}', 
     "./App.{js,jsx,ts,tsx}",
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+  presets: [require('nativewind/preset')],
   theme: {
     extend: {},
   },

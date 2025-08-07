@@ -1,22 +1,28 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { DarkTheme, LightTheme } from "@/constants/Theme";
+
 import { useFonts } from "expo-font";
-import { useNavigation } from "expo-router";
+
 import "react-native-reanimated";
 import { useState } from "react";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Drawer } from "expo-router/drawer";
+import { CustomDrawerContent } from "@/components/CustomDrawerContent";
+import { View, Text } from "react-native";
+
+import {
+  MD3LightTheme as DefaultTheme,
+  PaperProvider,
+} from "react-native-paper";
+import { DrawerProvider } from "@/hooks/useDrawer";
+
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
-  const navigation = useNavigation();
-  const [active, setActive] = useState("home");
+  // const navigation = useNavigation();
+  const [active, setActive] = useState("album");
 
   if (!loaded) {
     // Async font loading only occurs in development.
@@ -24,35 +30,28 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Drawer>
-        <Drawer.Screen
-          name="(album)" // This is the name of the page and must match the url from root
-          options={{
-            drawerLabel: "Album",
-            title: "overview",
+    <PaperProvider theme={colorScheme === "dark" ? DarkTheme : LightTheme}>
+      <DrawerProvider>
+        <Drawer
+          screenOptions={{
+            headerShown: true,
           }}
-        />
-        <Drawer.Screen
-          name="feeding" // This is the name of the page and must match the url from root
-          options={{
-            drawerLabel: "User",
-            title: "overview",
+          initialRouteName="(album)"
+          drawerContent={(props) => {
+            const contentsProps = { ...props, active };
+            console.log("drawer content props", props);
+            return <CustomDrawerContent {...contentsProps} />;
           }}
-        />
-        {/* <Drawer.Screen
-          name="+not-found" // This is the name of the page and must match the url from root
-          options={{
-            drawerLabel: "User",
-            title: "overview",
-            drawerItemStyle: { display: 'none' },
-          }}
-        /> */}
-      </Drawer>
-    </ThemeProvider>
+        >
+          <Drawer.Screen name="(album)" options={{ title: "앨범 홈" }} />
+          <Drawer.Screen name="history" options={{ title: "history" }} />
+
+        </Drawer>
+      </DrawerProvider>
+    </PaperProvider>
   );
 }
 
 export const unstable_settings = {
-  initialRouteName: 'index', // 자동 등록 방지
+  initialRouteName: "index", // 자동 등록 방지
 };

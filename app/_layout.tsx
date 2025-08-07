@@ -1,11 +1,11 @@
 import {
-  DarkTheme,
-  DefaultTheme,
+  
   ThemeProvider,
 } from "@react-navigation/native";
+import { DarkTheme, LightTheme } from "@/constants/Theme"
 import { useFonts } from "expo-font";
 import { Stack, useNavigation } from "expo-router";
-
+import "../global.css"
 import "react-native-reanimated";
 import { useState } from "react";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -29,7 +29,7 @@ export default function RootLayout() {
   
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    // <ThemeProvider value={colorScheme === "dark" ? DarkTheme : LightTheme}>
       <GestureHandlerRootView style={{ flex: 1 }}>
       {/* <Drawer>
         <Drawer.Screen
@@ -49,7 +49,7 @@ export default function RootLayout() {
       </Drawer> */}
        
       </GestureHandlerRootView>
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 }
 

@@ -8,7 +8,7 @@ import { DrawerNavigationOptions } from "@react-navigation/drawer";
 export default function NotFoundScreen() {
   return (
     <>
-      {/* <Stack.Screen options={{  title: "Oops!" }} /> */}
+      <Stack.Screen options={{  title: "Oops!" }} />
       <ThemedView style={styles.container}>
         <ThemedText type="title">This screen does not exist.</ThemedText>
         <Link href="/" style={styles.link}>
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
 });
 
 export const options :DrawerNavigationOptions= {
-  
   drawerLabel: '404', // 있어도 안 보여요
   drawerItemStyle: { display: 'none' },
 };
