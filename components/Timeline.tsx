@@ -1,15 +1,13 @@
+import { TimelineItem } from "@/components/TimelineItem";
+import { format, startOfDay } from "date-fns";
 import React, { useCallback, useMemo, useState } from "react";
 import {
-  FlatList,
-  View,
-  Text,
   Dimensions,
-  ScrollView,
+  FlatList,
   LayoutChangeEvent,
+  Text,
+  View
 } from "react-native";
-import { TimelineItem } from "@/components/TimelineItem";
-import { format } from "date-fns";
-import { startOfDay } from "date-fns";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -62,7 +60,7 @@ export const Timeline = ({ data }: Props) => {
   const [contentWidth, setContentWidth] = useState(0);
 
   const numColumns = 3;
-  const itemWidth = (screenWidth - 16 - (numColumns - 1) * 10) / numColumns; // 16은 좌우 패딩, 8은 아이템 간격
+
   const GAP = 8;
   const itemStyle = useMemo(() => {
     if (!contentWidth)
