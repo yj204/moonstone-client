@@ -7,6 +7,9 @@ import { Drawer, Avatar, Text } from "react-native-paper";
 import { View } from "react-native";
 import { Link } from "expo-router";
 import { useDrawer } from "@/hooks/useDrawer";
+import { ThemedView } from "./ThemedView";
+import { useMaterialTheme } from "@/hooks/useThemeColor";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function CustomDrawerContent(
   props: PropsWithChildren<
@@ -16,17 +19,19 @@ export function CustomDrawerContent(
   >
 ) {
   const { activeItem, setActiveItem } = useDrawer();
+  const { colors } = useMaterialTheme();
   return (
     <DrawerContentScrollView {...props}>
-      <View className="p-4 items-center bg-white dark:bg-neutral-900">
+      <ThemedView className="p-4 items-center">
         <Avatar.Text size={64} label="CJ" />
         <Text className="text-lg font-semibold mt-2"> username </Text>
         {/* <Text className="text-sm text-neutral-500"> username </Text> */}
-      </View>
+      </ThemedView>
 
-      <Drawer.Section title="Navigation" className="mt-4">
+      <Drawer.Section title="Navigation" className="mt-4" style={{backgroundColor:colors.background }}>
         <Link href="/" asChild>
           <Drawer.Item
+            
             label="Album"
             icon="home"
             active={activeItem === "album"}
@@ -41,6 +46,10 @@ export function CustomDrawerContent(
             onPress={() => setActiveItem("feeding")}
           />
         </Link>
+      </Drawer.Section>
+
+      <Drawer.Section title="Settings" className="mt-4" style={{backgroundColor:colors.background }}>
+        <ThemeToggle />
       </Drawer.Section>
     </DrawerContentScrollView>
   );

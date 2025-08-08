@@ -1,10 +1,9 @@
 import AlbumFAB from "@/components/AlbumFAB";
-import { useNavigation } from "expo-router";
-import { View, Text } from "react-native";
-import FeedScreen from "./feed";
-import { TimelineItem } from "@/components/TimelineItem";
 import { Timeline } from "@/components/Timeline";
+import { useMaterialTheme } from '@/hooks/useThemeColor';
+import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+
 const data = [
   {
     id: "1",
@@ -49,10 +48,20 @@ const data = [
     // caption: "한라산 정상에서",
   },
 ];
+
 export default function AlbumMainScreen() {
+  const theme = useMaterialTheme();
+  
+  console.log('Album theme colors:', {
+    background: theme.colors.background,
+    surface: theme.colors.surface,
+    onBackground: theme.colors.onBackground,
+    onSurface: theme.colors.onSurface
+  });
+
   return (
-    <View>
-      <ScrollView>
+    <View className="bg-md-primary">
+      <ScrollView style={{ flex: 1 }}>
         <Timeline data={data} />
       </ScrollView>
       <AlbumFAB />

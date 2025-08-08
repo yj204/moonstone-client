@@ -1,5 +1,6 @@
 import { Image, Text, View } from "react-native";
 import { useEffect, useState } from "react";
+import { ThemedView} from '@/components/ThemedView'
 type Props = {
   date: Date | string;
   image: any;
@@ -42,7 +43,7 @@ export const TimelineItem = ({ date, image, caption }: Props) => {
       style={animatedStyle} 
       className="mb-4"
     >
-      <View className="rounded-xl overflow-hidden shadow-md">
+      <View className="rounded-sm overflow-hidden shadow-md">
         <Image 
           source={{uri:image}} 
           className="w-full aspect-square"
@@ -50,10 +51,6 @@ export const TimelineItem = ({ date, image, caption }: Props) => {
           onLoad={handleImageLoad}
         />
       </View>
-
-      {caption ? (
-        <Text className="text-gray-700 mt-2 text-lg">{caption}</Text>
-      ) : null}
     </Animated.View>
   );
 };

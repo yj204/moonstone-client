@@ -1,3 +1,4 @@
+import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { Stack, useNavigation } from "expo-router";
 import { useLayoutEffect } from "react";
 
@@ -7,9 +8,9 @@ export const screenOptions = {
 
 export default function AlbumLayout() {
   const navigation = useNavigation();
-
+  
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack screenOptions={{ headerShown: false, }}>
       <Stack.Screen name="(album)" options={{ headerShown: false }} />
     </Stack>
   );

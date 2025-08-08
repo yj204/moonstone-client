@@ -1,15 +1,22 @@
 import { TimelineItem } from "@/components/TimelineItem";
-import { format, startOfDay } from "date-fns";
-import React, { useCallback, useMemo, useState } from "react";
+import { format, max, startOfDay } from "date-fns";
+import React, {
+  ComponentProps,
+  PropsWithChildren,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import {
   Dimensions,
   FlatList,
   LayoutChangeEvent,
   Text,
-  View
+  View,
 } from "react-native";
-
-const { width: screenWidth } = Dimensions.get("window");
+import { ThemedView } from "./ThemedView";
+import { Platform } from "react-native";
+import { ThemedText } from "./ThemedText";
 
 type Props = {
   data: {
@@ -30,7 +37,38 @@ type TimelineSection = {
 };
 
 export const Timeline = ({ data }: Props) => {
-  // 날짜별로 그룹화하고 정렬된 섹션 배열 생성
+  const {
+    initialNumToRender,
+    maxToRenderPerBatch,
+    windowSize = 4,
+    numColumns = 4,
+  } = useMemo(() => {
+    let initialNumToRender, maxToRenderPerBatch, windowSize, numColumns;
+    switch (Platform.OS) {
+      case "web": {
+        initialNumToRender = 6;
+        maxToRenderPerBatch = 12;
+        windowSize = 6;
+        numColumns = 6;
+        break;
+      }
+      case "android":
+      case "ios": {
+        initialNumToRender = 3;
+        maxToRenderPerBatch = 6;
+        windowSize = 4;
+        numColumns = 4;
+        break;
+      }
+    }
+    return {
+      initialNumToRender,
+      maxToRenderPerBatch,
+      windowSize,
+      numColumns,
+    };
+  }, []);
+
   const timelineSections = useMemo(() => {
     const groupByDate = data.reduce((acc, curr) => {
       const dateKey =
@@ -56,18 +94,16 @@ export const Timeline = ({ data }: Props) => {
       }))
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // 최신 날짜가 위로
   }, [data]);
-  console.log("timeline section", timelineSections);
-  const [contentWidth, setContentWidth] = useState(0);
 
-  const numColumns = 3;
+  const [contentWidth, setContentWidth] = useState(0);
 
   const GAP = 8;
   const itemStyle = useMemo(() => {
     if (!contentWidth)
       return {
         width: 0,
-        marginRight: 8,
-        marginBottom: 8,
+        marginRight: 2,
+        marginBottom: 2,
       };
     // 행당 (N-1)개의 갭을 뺀 뒤 균등 분배
     const width = Math.floor(
@@ -75,18 +111,18 @@ export const Timeline = ({ data }: Props) => {
     );
     return {
       width,
-      marginRight: 8,
-      marginBottom: 8,
+      marginRight: 2,
+      marginBottom: 2,
     };
   }, [contentWidth]);
 
   const renderSection = useCallback(
     ({ item: section }: { item: TimelineSection }) => (
-      <View className="mb-6">
-        <Text className="text-lg font-semibold text-gray-800 mb-3 px-2">
+      <View className="mb-6 w-full">
+        <Text className="text-lg font-semibold mb-3 px-2">
           {format(new Date(section.date), "yyyy년 M월 d일")}
         </Text>
-        <View className="px-2">
+        <View className="px-2 w-full">
           <FlatList
             onLayout={(e: LayoutChangeEvent) => {
               console.log("on loayout ", e.nativeEvent.layout);
@@ -94,7 +130,7 @@ export const Timeline = ({ data }: Props) => {
             }}
             data={section.items}
             renderItem={({ item: timelineItem, index }) => (
-              <View style={itemStyle}>
+              <View className={`w-[${itemStyle.width}px] m-1`}>
                 <TimelineItem
                   date={timelineItem.date}
                   caption={timelineItem.caption}
@@ -110,18 +146,19 @@ export const Timeline = ({ data }: Props) => {
         </View>
       </View>
     ),
-    [itemStyle]
+    [itemStyle.width]
   );
 
   return (
-    <View className="flex-1 px-2 py-6 bg-white">
+    <View className="flex-1 px-2 py-6 w-full bg-md-primary">
       <FlatList
+        className="w-full"
         data={timelineSections}
         keyExtractor={(item) => item.date}
         renderItem={renderSection}
-        initialNumToRender={3}
-        maxToRenderPerBatch={5}
-        windowSize={7}
+        initialNumToRender={initialNumToRender}
+        maxToRenderPerBatch={maxToRenderPerBatch}
+        windowSize={windowSize}
         showsVerticalScrollIndicator={false}
       />
     </View>
