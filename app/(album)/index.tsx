@@ -1,6 +1,6 @@
 import AlbumFAB from "@/components/AlbumFAB";
 import { Timeline } from "@/components/Timeline";
-import { useMaterialTheme } from '@/hooks/useThemeColor';
+import { useMaterialTheme } from '@/hooks/useMaterialColor';
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -60,7 +60,7 @@ export default function AlbumMainScreen() {
   });
 
   return (
-    <View className="bg-md-primary">
+    <View className="primary">
       <ScrollView style={{ flex: 1 }}>
         <Timeline data={data} />
       </ScrollView>

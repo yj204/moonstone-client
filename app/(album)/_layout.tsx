@@ -1,6 +1,5 @@
-import { useColorScheme } from "@/hooks/useColorScheme.web";
+
 import { Stack, useNavigation } from "expo-router";
-import { useLayoutEffect } from "react";
 
 export const screenOptions = {
   title: "Album",

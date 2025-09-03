@@ -1,2 +1,2 @@
 
-export { useColorScheme } from 'nativewind';
+export { useColorScheme } from 'react-native';

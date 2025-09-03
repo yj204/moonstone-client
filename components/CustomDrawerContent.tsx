@@ -1,56 +1,73 @@
-import { PropsWithChildren, useState } from "react";
+import { useDrawer } from "@/hooks/useDrawer";
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
-import { Drawer, Avatar, Text } from "react-native-paper";
-import { View } from "react-native";
 import { Link } from "expo-router";
-import { useDrawer } from "@/hooks/useDrawer";
+import { PropsWithChildren, useMemo } from "react";
+import { Avatar, Drawer, Text } from "react-native-paper";
 import { ThemedView } from "./ThemedView";
-import { useMaterialTheme } from "@/hooks/useThemeColor";
+import { View } from "react-native";
+
 import { ThemeToggle } from "./ThemeToggle";
+import { ThemedText } from "./ThemedText";
+import { useMaterialColor, useMaterialTheme } from "@/hooks/useMaterialColor";
+import { getPaperTheme } from "@/theme/paperTheme";
 
 export function CustomDrawerContent(
   props: PropsWithChildren<
     DrawerContentComponentProps & {
       active?: string;
     }
-  >
+  >,
 ) {
   const { activeItem, setActiveItem } = useDrawer();
-  const { colors } = useMaterialTheme();
+  const color = useMaterialColor("surface");
+
+  const theme = getPaperTheme()
   return (
-    <DrawerContentScrollView {...props}>
-      <ThemedView className="p-4 items-center">
-        <Avatar.Text size={64} label="CJ" />
-        <Text className="text-lg font-semibold mt-2"> username </Text>
-        {/* <Text className="text-sm text-neutral-500"> username </Text> */}
+    <DrawerContentScrollView
+      style={{ backgroundColor: color.toString() }}
+      {...props}
+    >
+      <ThemedView>
+        <View className="items-center p-4">
+          <Avatar.Text size={64} label="CJ" />
+          <ThemedText className="mt-2 text-lg font-semibold">
+            {" "}
+            username{" "}
+          </ThemedText>
+        </View>
+
+        <Drawer.Section title="Navigation" className="background mt-4">
+          <Link href="/" asChild>
+            <Drawer.Item
+              label="Album"
+              icon="home"
+              theme={{
+                colors: {
+                  secondaryContainer: theme.colors.secondaryContainer,
+                  onSurfaceVariant: theme.colors.onSurface,
+                },
+              }}
+              active={activeItem === "album"}
+              onPress={() => setActiveItem("album")}
+            />
+          </Link>
+          <Link href="/history" asChild>
+            <Drawer.Item
+              label="Feeding"
+              icon="cog"
+              active={activeItem === "feeding"}
+              onPress={() => setActiveItem("feeding")}
+            />
+          </Link>
+        </Drawer.Section>
+
+        <Drawer.Section title="Settings" className="background mt-4">
+          <ThemeToggle />
+        </Drawer.Section>
       </ThemedView>
-
-      <Drawer.Section title="Navigation" className="mt-4" style={{backgroundColor:colors.background }}>
-        <Link href="/" asChild>
-          <Drawer.Item
-            
-            label="Album"
-            icon="home"
-            active={activeItem === "album"}
-            onPress={() => setActiveItem("album")}
-          />
-        </Link>
-        <Link href="/history" asChild>
-          <Drawer.Item
-            label="Feeding"
-            icon="cog"
-            active={activeItem === "feeding"}
-            onPress={() => setActiveItem("feeding")}
-          />
-        </Link>
-      </Drawer.Section>
-
-      <Drawer.Section title="Settings" className="mt-4" style={{backgroundColor:colors.background }}>
-        <ThemeToggle />
-      </Drawer.Section>
     </DrawerContentScrollView>
   );
 }

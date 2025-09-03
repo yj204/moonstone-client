@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { useMaterialTheme } from '@/hooks/useThemeColor';
+import { useMaterialTheme } from '@/hooks/useMaterialColor';
 
 interface MaterialButtonProps {
   title: string;

@@ -118,7 +118,7 @@ export const Timeline = ({ data }: Props) => {
 
   const renderSection = useCallback(
     ({ item: section }: { item: TimelineSection }) => (
-      <View className="mb-6 w-full">
+      <ThemedView className="mb-6 w-full">
         <Text className="text-lg font-semibold mb-3 px-2">
           {format(new Date(section.date), "yyyy년 M월 d일")}
         </Text>
@@ -144,13 +144,13 @@ export const Timeline = ({ data }: Props) => {
             showsVerticalScrollIndicator={false}
           />
         </View>
-      </View>
+      </ThemedView>
     ),
     [itemStyle.width]
   );
 
   return (
-    <View className="flex-1 px-2 py-6 w-full bg-md-primary">
+    <ThemedView className="flex-1 px-2 py-6 w-full bg-md-surface">
       <FlatList
         className="w-full"
         data={timelineSections}
@@ -161,6 +161,6 @@ export const Timeline = ({ data }: Props) => {
         windowSize={windowSize}
         showsVerticalScrollIndicator={false}
       />
-    </View>
+    </ThemedView>
   );
 };

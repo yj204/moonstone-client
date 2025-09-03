@@ -1,71 +1,27 @@
 const { platformSelect } = require("nativewind/theme");
- 
+const material = require('./material-theme.json')
+const LIGHT = material.schemes.light;
+const DARK  = material.schemes.dark;
+
+const toKebab = (s) => s.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());
+
+// Build tokens like "md-on-surface", "md-primary", plus "-dark" variants.
+const mdLight = Object.fromEntries(
+  Object.entries(LIGHT).map(([k, v]) => [`md-${toKebab(k)}`, v])
+);
+const mdDark = Object.fromEntries(
+  Object.entries(DARK).map(([k, v]) => [`md-${toKebab(k)}-dark`, v])
+);
+
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode:'class',
   theme: {
     extend: {
       colors: {
-        // 기본 색상들 (bg-primary, text-primary 등 사용 가능)
-        'primary': 'var(--md-sys-color-primary)',
-        'on-primary': 'var(--md-sys-color-on-primary)',
-        'primary-container': 'var(--md-sys-color-primary-container)',
-        'on-primary-container': 'var(--md-sys-color-on-primary-container)',
-        'secondary': 'var(--md-sys-color-secondary)',
-        'on-secondary': 'var(--md-sys-color-on-secondary)',
-        'secondary-container': 'var(--md-sys-color-secondary-container)',
-        'on-secondary-container': 'var(--md-sys-color-on-secondary-container)',
-        'tertiary': 'var(--md-sys-color-tertiary)',
-        'on-tertiary': 'var(--md-sys-color-on-tertiary)',
-        'tertiary-container': 'var(--md-sys-color-tertiary-container)',
-        'on-tertiary-container': 'var(--md-sys-color-on-tertiary-container)',
-        'error': 'var(--md-sys-color-error)',
-        'on-error': 'var(--md-sys-color-on-error)',
-        'error-container': 'var(--md-sys-color-error-container)',
-        'on-error-container': 'var(--md-sys-color-on-error-container)',
-        'background': 'var(--md-sys-color-background)',
-        'on-background': 'var(--md-sys-color-on-background)',
-        'surface': 'var(--md-sys-color-surface)',
-        'on-surface': 'var(--md-sys-color-on-surface)',
-        'surface-variant': 'var(--md-sys-color-surface-variant)',
-        'on-surface-variant': 'var(--md-sys-color-on-surface-variant)',
-        'outline': 'var(--md-sys-color-outline)',
-        'outline-variant': 'var(--md-sys-color-outline-variant)',
-        'shadow': 'var(--md-sys-color-shadow)',
-        'scrim': 'var(--md-sys-color-scrim)',
-        'inverse-surface': 'var(--md-sys-color-inverse-surface)',
-        'inverse-on-surface': 'var(--md-sys-color-inverse-on-surface)',
-        'inverse-primary': 'var(--md-sys-color-inverse-primary)',
-        
-        // Material3 색상들 (md- 접두사 사용)
-        'md-primary': 'var(--md-sys-color-primary)',
-        'md-on-primary': 'var(--md-sys-color-on-primary)',
-        'md-primary-container': 'var(--md-sys-color-primary-container)',
-        'md-on-primary-container': 'var(--md-sys-color-on-primary-container)',
-        'md-secondary': 'var(--md-sys-color-secondary)',
-        'md-on-secondary': 'var(--md-sys-color-on-secondary)',
-        'md-secondary-container': 'var(--md-sys-color-secondary-container)',
-        'md-on-secondary-container': 'var(--md-sys-color-on-secondary-container)',
-        'md-tertiary': 'var(--md-sys-color-tertiary)',
-        'md-on-tertiary': 'var(--md-sys-color-on-tertiary)',
-        'md-tertiary-container': 'var(--md-sys-color-tertiary-container)',
-        'md-on-tertiary-container': 'var(--md-sys-color-on-tertiary-container)',
-        'md-error': 'var(--md-sys-color-error)',
-        'md-on-error': 'var(--md-sys-color-on-error)',
-        'md-error-container': 'var(--md-sys-color-error-container)',
-        'md-on-error-container': 'var(--md-sys-color-on-error-container)',
-        'md-background': 'var(--md-sys-color-background)',
-        'md-on-background': 'var(--md-sys-color-on-background)',
-        'md-surface': 'var(--md-sys-color-surface)',
-        'md-on-surface': 'var(--md-sys-color-on-surface)',
-        'md-surface-variant': 'var(--md-sys-color-surface-variant)',
-        'md-on-surface-variant': 'var(--md-sys-color-on-surface-variant)',
-        'md-outline': 'var(--md-sys-color-outline)',
-        'md-outline-variant': 'var(--md-sys-color-outline-variant)',
-        'md-shadow': 'var(--md-sys-color-shadow)',
-        'md-scrim': 'var(--md-sys-color-scrim)',
-        'md-inverse-surface': 'var(--md-sys-color-inverse-surface)',
-        'md-inverse-on-surface': 'var(--md-sys-color-inverse-on-surface)',
-        'md-inverse-primary': 'var(--md-sys-color-inverse-primary)',
+        ...mdLight,
+        ...mdDark,
       },
     },
   },

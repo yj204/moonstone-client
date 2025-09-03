@@ -1,7 +1,7 @@
-import { View, type ViewProps } from "react-native";
+import { useColorScheme, View, type ViewProps } from "react-native";
 import { MD3Colors } from "react-native-paper/lib/typescript/types";
 
-import { useMaterialColor, useMaterialTheme } from "@/hooks/useThemeColor";
+import { useMaterialColor, useMaterialTheme } from "@/hooks/useMaterialColor";
 
 export type ThemedViewProps = ViewProps & {
   lightColor?: string;
@@ -16,11 +16,13 @@ export function ThemedView({
   colorName = "background",
   ...otherProps
 }: ThemedViewProps) {
-  const { colors } = useMaterialTheme();
-
+  
+  const colors = useMaterialColor( colorName)
+  
   return (
     <View
-      style={[{ backgroundColor: colors.surface as string }, style]}
+      // className=""
+      style={[{ backgroundColor: colors.toString() }, style]}
       {...otherProps}
     />
   );

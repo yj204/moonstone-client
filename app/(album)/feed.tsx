@@ -1,3 +1,4 @@
+import { ThemedView } from "@/components/ThemedView";
 import { Timeline } from "@/components/Timeline";
 
 // 샘플 데이터 - 실제로는 API나 로컬 저장소에서 가져올 데이터
@@ -34,5 +35,8 @@ const sampleData = [
 ];
 
 export default function FeedScreen() {
-  return <Timeline data={sampleData} />;
+
+  return <ThemedView>
+    <Timeline data={sampleData} />;
+  </ThemedView>
 }

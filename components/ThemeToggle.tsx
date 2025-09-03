@@ -1,45 +1,20 @@
-import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { useMaterialTheme } from "@/hooks/useThemeColor";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import {
-  setGlobalThemeMode,
-  getGlobalThemeMode,
-} from "@/hooks/useColorScheme.web";
+import { getPaperTheme } from "@/theme/paperTheme";
+import { useColorScheme as useNWColorScheme } from "nativewind";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 
 export function ThemeToggle() {
-  const theme = useMaterialTheme();
-  const { colorScheme, setColorScheme } = useColorScheme();
-  const currentThemeMode = getGlobalThemeMode();
+  
+  const { colorScheme, toggleColorScheme } = useNWColorScheme();
+  const theme = getPaperTheme()
 
-  const toggleTheme = () => {
-    let newMode: "light" | "dark" | "system";
-
-    // if (currentThemeMode === 'system') {
-    //   newMode = colorScheme === 'dark' ? 'light' : 'dark';
-    // } else if (currentThemeMode === 'dark') {
-    //   newMode = 'light';
-    // } else {
-    //   newMode = 'dark';
-    // }
-    if (colorScheme === "dark") newMode = "light";
-    else newMode = "dark";
-    setColorScheme(newMode);
-    console.log("Theme changed to:", newMode);
-  };
-
+  
   const getThemeIcon = () => {
-    // if (currentThemeMode === 'system') {
     return colorScheme === "dark" ? "🌙" : "☀️";
-    // }
-    // return currentThemeMode === 'dark' ? '🌙' : '☀️';
   };
 
   const getThemeLabel = () => {
-    if (currentThemeMode === "system") {
-      return `System (${colorScheme})`;
-    }
-    return currentThemeMode === "dark" ? "Dark" : "Light";
+    return theme.dark ? "Dark" : "Light";
   };
 
   return (
@@ -62,7 +37,7 @@ export function ThemeToggle() {
             borderColor: theme.colors.outline,
           },
         ]}
-        onPress={toggleTheme}
+        onPress={toggleColorScheme}
         activeOpacity={0.7}
       >
         <Text style={[styles.toggleText, { color: theme.colors.onPrimary }]}>
