@@ -1,4 +1,4 @@
-import { TimelineImage } from "@/components/TimelineImage";
+import { TimelineImage } from "./TimelineImage";
 import { format, max, startOfDay } from "date-fns";
 import React, {
   ComponentProps,
@@ -14,9 +14,9 @@ import {
   Text,
   View,
 } from "react-native";
-import { ThemedView } from "./ThemedView";
+import { ThemedView } from "../ThemedView";
 import { Platform } from "react-native";
-import { ThemedText } from "./ThemedText";
+import { ThemedText } from "../ThemedText";
 
 type Props = {
   data: {
@@ -36,7 +36,7 @@ type TimelineSection = {
   items: Props["data"];
 };
 
-export const Timeline = ({ data }: Props) => {
+export const AlbumTimeline = ({ data }: Props) => {
   const {
     initialNumToRender,
     maxToRenderPerBatch,

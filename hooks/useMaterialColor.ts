@@ -5,7 +5,7 @@
 
 // import { DarkTheme, LightTheme } from "@/constants/Theme";
 
-import { getPaperTheme } from "@/theme/paperTheme";
+import { usePaperTheme } from "@/theme/paperTheme";
 import { useColorScheme as useNWColorScheme } from "nativewind";
 import { MD3Colors } from "react-native-paper/lib/typescript/types";
 export { useTheme as useMaterialTheme } from "react-native-paper";
@@ -18,7 +18,7 @@ export function useMaterialColor(
   colorName: keyof MD3Colors
 ) {
   const { colorScheme} = useNWColorScheme();
-  const theme = getPaperTheme(colorScheme==="dark")
+  const theme = usePaperTheme(colorScheme==="dark")
   return theme.colors[colorName] ;
  
 }

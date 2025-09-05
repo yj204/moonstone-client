@@ -12,7 +12,7 @@ import { View } from "react-native";
 import { ThemeToggle } from "./ThemeToggle";
 import { ThemedText } from "./ThemedText";
 import { useMaterialColor, useMaterialTheme } from "@/hooks/useMaterialColor";
-import { getPaperTheme } from "@/theme/paperTheme";
+import { usePaperTheme } from "@/theme/paperTheme";
 
 export function CustomDrawerContent(
   props: PropsWithChildren<
@@ -27,7 +27,7 @@ export function CustomDrawerContent(
   const isActive = (path: string) =>
     pathName === path || pathName.startsWith(path + "/");
 
-  const theme = getPaperTheme();
+  const theme = usePaperTheme();
   return (
     <DrawerContentScrollView
       style={{ backgroundColor: color.toString() }}

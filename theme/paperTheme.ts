@@ -25,7 +25,8 @@ const dark: MD3Theme = {
   },
 };
 
-export const getPaperTheme = () => {
+console.log(light)
+export const usePaperTheme = () => {
   const { colorScheme, setColorScheme, toggleColorScheme } = useNWColorScheme();
   return colorScheme === "dark" ? dark : light;
 };

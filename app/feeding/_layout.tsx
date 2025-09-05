@@ -8,94 +8,99 @@ import TabBarBackground from "@/components/ui/TabBarBackground";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { ThemedView } from "@/components/ThemedView";
-import {subDays, subHours, startOfDay} from 'date-fns'
-import { groupBy } from 'remeda'
+import { subDays, subHours, startOfDay } from "date-fns";
+import { groupBy, pipe, sortBy } from "remeda";
+import  TimelineView  from "@/components/Timeline";
 
-const feedingExample = [
+export type FeedEvent = {
+  id: number;
+  date: Date | string;
+  type?: string;
+  amount_ml?: number;
+  duration?: number;
+  note?: string;
+};
+const feedingExample: FeedEvent[] = [
   {
-    id: 1,
+    id: 9,
     date: new Date().toISOString(),
-    type : 'feeding',   
+    type: "feeding",
     amount_ml: 120,
     duration: 15,
-    note: '잘 먹었네'
-  },
-  {
-    id: 2,
-    date: subHours(new Date(),1).toISOString(),
-    type : 'feeding',   
-    amount_ml: 120,
-    duration: 15,
-    note: '잘 먹었네'
-  },
-  {
-    id: 3,
-    date: subHours(new Date(),2).toISOString(),
-    type : 'feeding',   
-    amount_ml: 120,
-    duration: 15,
-    note: '잘 먹었네'
-  },
-  {
-    id: 4,
-    date: subHours(new Date(),3).toISOString(),
-    type : 'feeding',   
-    amount_ml: 120,
-    duration: 15,
-    note: '잘 먹었네'
-  },
-  {
-    id: 5,
-    date: subHours(new Date(),4).toISOString(),
-    type : 'feeding',   
-    amount_ml: 120,
-    duration: 15,
-    note: '잘 먹었네'
-  },
-  {
-    id: 6,
-    date: subHours(subDays(new Date(),1),1).toISOString(),
-    type : 'feeding',   
-    amount_ml: 120,
-    duration: 15,
-    note: '잘 먹었네'
-  },
-  {
-    id: 7,
-    date: subHours(subDays(new Date(),1),2).toISOString(),
-    type : 'feeding',   
-    amount_ml: 120,
-    duration: 15,
-    note: '잘 먹었네'
+    note: "잘 먹었네",
   },
   {
     id: 8,
-    date: subHours(subDays(new Date(),1),3).toISOString(),
-    type : 'feeding',   
+    date: subHours(new Date(), 1).toISOString(),
+    type: "feeding",
     amount_ml: 120,
     duration: 15,
-    note: '잘 먹었네'
+    note: "잘 먹었네",
   },
   {
-    id: 9,
-    date: subHours(subDays(new Date(),1),4).toISOString(),
-    type : 'feeding',   
+    id: 7,
+    date: subHours(new Date(), 2).toISOString(),
+    type: "feeding",
     amount_ml: 120,
     duration: 15,
-    note: '잘 먹었네'
+    note: "잘 먹었네",
   },
-
-]
+  {
+    id: 6,
+    date: subHours(new Date(), 3).toISOString(),
+    type: "feeding",
+    amount_ml: 120,
+    duration: 15,
+    note: "잘 먹었네",
+  },
+  {
+    id: 5,
+    date: subHours(new Date(), 4).toISOString(),
+    type: "feeding",
+    amount_ml: 120,
+    duration: 15,
+    note: "잘 먹었네",
+  },
+  {
+    id: 4,
+    date: subHours(subDays(new Date(), 1), 1).toISOString(),
+    type: "feeding",
+    amount_ml: 120,
+    duration: 15,
+    note: "잘 먹었네",
+  },
+  {
+    id: 3,
+    date: subHours(subDays(new Date(), 1), 2).toISOString(),
+    type: "feeding",
+    amount_ml: 120,
+    duration: 15,
+    note: "잘 먹었네",
+  },
+  {
+    id: 1,
+    date: subHours(subDays(new Date(), 1), 4).toISOString(),
+    type: "feeding",
+    amount_ml: 120,
+    duration: 15,
+    note: "잘 먹었네",
+  },
+  {
+    id: 2,
+    date: subHours(subDays(new Date(), 1), 3).toISOString(),
+    type: "feeding",
+    amount_ml: 120,
+    duration: 15,
+    note: "잘 먹었네",
+  },
+];
 
 export default function TabLayout() {
-  const groupByDate = groupBy(feedingExample,(value=>startOfDay(value.date).toString()))
-  console.log(groupByDate)
+
 
   return (
-
-    
     <ThemedView className="h-full">
-      this is feeding view 
+      <TimelineView events={feedingExample}/>
     </ThemedView>
     // <Tabs
     //   screenOptions={{

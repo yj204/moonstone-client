@@ -9,7 +9,7 @@ import { Icon, PaperProvider } from "react-native-paper";
 import { useMaterialTheme } from "@/hooks/useMaterialColor";
 import { useColorScheme } from "react-native";
 import { useColorScheme as useNativeWindColorScheme } from "nativewind";
-import { getPaperTheme } from "@/theme/paperTheme";
+import { usePaperTheme } from "@/theme/paperTheme";
 
 export default function RootLayout() {
   // const { colorScheme } = useColorScheme();
@@ -25,7 +25,7 @@ export default function RootLayout() {
   }, [colorScheme]);
 
   const [active, setActive] = useState("album");
-  const paperTheme = getPaperTheme();
+  const paperTheme = usePaperTheme();
   return (
     <PaperProvider theme={paperTheme}>
       <DrawerProvider>

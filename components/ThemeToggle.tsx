@@ -1,4 +1,4 @@
-import { getPaperTheme } from "@/theme/paperTheme";
+import { usePaperTheme } from "@/theme/paperTheme";
 import { useColorScheme as useNWColorScheme } from "nativewind";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -6,7 +6,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 export function ThemeToggle() {
   
   const { colorScheme, toggleColorScheme } = useNWColorScheme();
-  const theme = getPaperTheme()
+  const theme = usePaperTheme()
 
   
   const getThemeIcon = () => {

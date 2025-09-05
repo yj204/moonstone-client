@@ -16,9 +16,8 @@ export function ThemedView({
   colorName = "background",
   ...otherProps
 }: ThemedViewProps) {
-  
-  const colors = useMaterialColor( colorName)
-  
+  const colors = useMaterialColor(colorName);
+
   return (
     <View
       style={[{ backgroundColor: colors.toString() }, style]}
