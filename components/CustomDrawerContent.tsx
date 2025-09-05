@@ -3,7 +3,7 @@ import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
-import { Link } from "expo-router";
+import { Link, usePathname } from "expo-router";
 import { PropsWithChildren, useMemo } from "react";
 import { Avatar, Drawer, Text } from "react-native-paper";
 import { ThemedView } from "./ThemedView";
@@ -23,8 +23,11 @@ export function CustomDrawerContent(
 ) {
   const { activeItem, setActiveItem } = useDrawer();
   const color = useMaterialColor("surface");
+  const pathName = usePathname()
+  const isActive = (path: string) =>
+    pathName === path || pathName.startsWith(path + "/");
 
-  const theme = getPaperTheme()
+  const theme = getPaperTheme();
   return (
     <DrawerContentScrollView
       style={{ backgroundColor: color.toString() }}
@@ -50,16 +53,16 @@ export function CustomDrawerContent(
                   onSurfaceVariant: theme.colors.onSurface,
                 },
               }}
-              active={activeItem === "album"}
-              onPress={() => setActiveItem("album")}
+              active={isActive('/')}
+              onPress={() => {}}
             />
           </Link>
-          <Link href="/history" asChild>
+          <Link href="/feeding" asChild>
             <Drawer.Item
               label="Feeding"
               icon="cog"
-              active={activeItem === "feeding"}
-              onPress={() => setActiveItem("feeding")}
+              active={isActive('/feeding')}
+              onPress={() =>{} }
             />
           </Link>
         </Drawer.Section>

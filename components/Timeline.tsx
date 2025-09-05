@@ -1,4 +1,4 @@
-import { TimelineItem } from "@/components/TimelineItem";
+import { TimelineImage } from "@/components/TimelineImage";
 import { format, max, startOfDay } from "date-fns";
 import React, {
   ComponentProps,
@@ -104,10 +104,11 @@ export const Timeline = ({ data }: Props) => {
         width: 0,
         marginRight: 2,
         marginBottom: 2,
+        class: `max-w-[0]`
       };
     // 행당 (N-1)개의 갭을 뺀 뒤 균등 분배
     const width = Math.floor(
-      (contentWidth - GAP * (numColumns - 1)) / numColumns
+      (contentWidth - GAP * (numColumns - 1)) / numColumns,
     );
     return {
       width,
@@ -119,24 +120,28 @@ export const Timeline = ({ data }: Props) => {
   const renderSection = useCallback(
     ({ item: section }: { item: TimelineSection }) => (
       <ThemedView className="mb-6 w-full">
-        <Text className="text-lg font-semibold mb-3 px-2">
+        <ThemedText className="mb-3 px-2 text-lg font-semibold">
           {format(new Date(section.date), "yyyy년 M월 d일")}
-        </Text>
-        <View className="px-2 w-full">
+        </ThemedText>
+        <View className="w-full px-2">
           <FlatList
+            extraData={itemStyle}
             onLayout={(e: LayoutChangeEvent) => {
               console.log("on loayout ", e.nativeEvent.layout);
               setContentWidth(e.nativeEvent.layout.width);
             }}
             data={section.items}
             renderItem={({ item: timelineItem, index }) => (
-              <View className={`w-[${itemStyle.width}px] m-1`}>
-                <TimelineItem
+              <ThemedView
+                className={`flex md:m-1 lg:m-1`}
+                style={{width: itemStyle.width ,maxWidth:itemStyle.width}}
+              >
+                <TimelineImage
                   date={timelineItem.date}
                   caption={timelineItem.caption}
                   image={timelineItem.image}
                 />
-              </View>
+              </ThemedView>
             )}
             keyExtractor={(item) => item.id.toString()}
             numColumns={numColumns}
@@ -146,11 +151,11 @@ export const Timeline = ({ data }: Props) => {
         </View>
       </ThemedView>
     ),
-    [itemStyle.width]
+    [itemStyle.width],
   );
 
   return (
-    <ThemedView className="flex-1 px-2 py-6 w-full bg-md-surface">
+    <ThemedView className="w-full flex-1 px-2 py-6">
       <FlatList
         className="w-full"
         data={timelineSections}

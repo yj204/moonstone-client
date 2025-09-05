@@ -1,6 +1,5 @@
-import { Image, Text, View } from "react-native";
 import { useEffect, useState } from "react";
-import { ThemedView} from '@/components/ThemedView'
+import { Image, View } from "react-native";
 type Props = {
   date: Date | string;
   image: any;
@@ -8,12 +7,12 @@ type Props = {
 };
 
 import Animated, {
-  useSharedValue,
   useAnimatedStyle,
+  useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 
-export const TimelineItem = ({ date, image, caption }: Props) => {
+export const TimelineImage = ({ date, image, caption }: Props) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const opacity = useSharedValue(0)
   const offset = useSharedValue(20)
@@ -35,13 +34,14 @@ export const TimelineItem = ({ date, image, caption }: Props) => {
   }, [imageLoaded])
 
   const handleImageLoad = () => {
+    
     setImageLoaded(true);
   };
 
   return (
     <Animated.View 
       style={animatedStyle} 
-      className="mb-4"
+      className=""
     >
       <View className="rounded-sm overflow-hidden shadow-md">
         <Image 

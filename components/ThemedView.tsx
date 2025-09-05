@@ -21,7 +21,6 @@ export function ThemedView({
   
   return (
     <View
-      // className=""
       style={[{ backgroundColor: colors.toString() }, style]}
       {...otherProps}
     />
