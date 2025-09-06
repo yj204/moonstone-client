@@ -36,42 +36,62 @@ type Props = {
 
 export default function TimelineItem({ index, section, item }: Props) {
   const isLast = index === section.data.length - 1;
+  const isFirst = index === 0;
   const isFeeding = item.type === "feeding";
   const theme = usePaperTheme();
 
   return (
-    <ThemedView style={{ flexDirection: "row", paddingHorizontal: 16 ,marginBottom:10 }}>
+    <ThemedView style={{ flexDirection: "row", paddingHorizontal: 16 }}>
       {/* 타임라인 레일 */}
-      <ThemedView style={{ alignItems: "center", marginRight: 12 }}>
+      <View className="flex justify-center">
+        <Chip>{item.timeLabel}</Chip>
+      </View>
+      <ThemedView
+        style={{ alignItems: "center", marginRight: 12 , marginLeft: 12}}
+      >
         {/* 위쪽 라인 */}
-        {index !== 0 && (
-          <ThemedView
-            style={{
-              width: 2,
-              height: 12,
-              backgroundColor: theme.colors.outline,
-            }}
-          />
-        )}
+
+        <ThemedView
+          style={{
+            width: 2,
+            flex: 1,
+            opacity: isFirst ? 0 : 1,
+            backgroundColor: theme.colors.outline,
+          }}
+        />
         {/* 노드 */}
         <ThemedView
           style={{
-            width: 8,
-            height: 8,
-            borderRadius: 4,
+            width: 12,
+            height: 12,
+            borderRadius: 6,
             backgroundColor: theme.colors.primary,
+            borderWidth: 2,
+            borderColor: theme.colors.surface,
+            shadowColor: theme.colors.primary,
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 3,
           }}
         />
         {/* 아래쪽 라인 */}
-        {!isLast && (
-          <ThemedView
-            style={{ width: 2, flex: 1, backgroundColor: theme.colors.outline }}
-          />
-        )}
+
+        <ThemedView
+          style={{
+            width: 2,
+            flex: 1,
+            opacity: isLast ? 0 : 1,
+            backgroundColor: theme.colors.outline,
+          }}
+        />
       </ThemedView>
 
       {/* 카드 */}
-      <Card className="mb-2" style={{ flex: 1  }}>
+      <Card
+        className="mb-2"
+        style={{ flex: 1, marginBottom: 10, marginTop: 10 }}
+      >
         <Card.Content style={{ paddingVertical: 12 }}>
           <View
             style={{

@@ -12,7 +12,7 @@ import { format, parseISO } from "date-fns";
 import { ko } from "date-fns/locale";
 import { ThemedView } from "../ThemedView";
 import { usePaperTheme } from "@/theme/paperTheme";
-import TimelineItem, { Section } from "./TimelineItem";
+import TimelineItem, { FeedEvent, Section, SectionItem } from "./TimelineItem";
 import TimelineHeader from "./TimelineHeader";
 
 type Props = {
@@ -56,22 +56,8 @@ function buildSections(raw: FeedEvent[]): Section[] {
 
 export default function TimelineView({ events }: Props) {
   const theme = usePaperTheme();
-  console.log("events", events);
   const sections = useMemo<Section[]>(() => buildSections(events), [events]);
 
-  // const renderSectionHeader = useCallback(
-  //   ({ section }: { section: Section }) => {
-      
-  //   },
-  //   [],
-  // );
-
-  // const renderItem = useCallback(
-  //   (props: { item: SectionItem; index: number; section: Section }) => {
-  //     return <TimelineItem {...props} />;
-  //   },
-  //   [theme],
-  // );
 
   return (
     <SectionList
@@ -79,7 +65,7 @@ export default function TimelineView({ events }: Props) {
       keyExtractor={(item) => String(item.id)}
       renderSectionHeader={TimelineHeader}
       renderItem={TimelineItem}
-      stickySectionHeadersEnabled
+      
       contentContainerStyle={{ paddingBottom: 24 }}
       ListEmptyComponent={
         <ThemedView style={{ alignItems: "center", padding: 32 }}>

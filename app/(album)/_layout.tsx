@@ -1,4 +1,5 @@
 
+import AlbumFAB from "@/components/AlbumFAB";
 import { Stack, useNavigation } from "expo-router";
 
 export const screenOptions = {
@@ -11,6 +12,7 @@ export default function AlbumLayout() {
   return (
     <Stack screenOptions={{ headerShown: false, }}>
       <Stack.Screen name="(album)" options={{ headerShown: false }} />
+      <AlbumFAB/>
     </Stack>
   );
 }

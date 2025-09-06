@@ -82,7 +82,7 @@ export default function AlbumMainScreen() {
       <ScrollView style={{ flex: 1 }}>
         <AlbumTimeline data={data} />
       </ScrollView>
-      <AlbumFAB />
+      
     </View>
   );
 }
