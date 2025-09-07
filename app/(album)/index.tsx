@@ -1,8 +1,7 @@
 import AlbumFAB from "@/components/AlbumFAB";
-import { AlbumTimeline } from "@/components/AlbumTimeline";
+import { AlbumTimeline } from "@/components/Album";
 import { useMaterialTheme } from '@/hooks/useMaterialColor';
 import { View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 
 const data = [
   {
@@ -65,6 +64,24 @@ const data = [
     image: "https://picsum.photos/200/300",
     // caption: "한라산 정상에서",
   },
+  {
+    id: "11",
+    date: "2025-08-04",
+    image: "https://picsum.photos/200/300",
+    // caption: "한라산 정상에서",
+  },
+  {
+    id: "120",
+    date: "2025-08-05",
+    image: "https://picsum.photos/200/300",
+    // caption: "한라산 정상에서",
+  },
+  {
+    id: "13",
+    date: "2025-08-06",
+    image: "https://picsum.photos/200/300",
+    // caption: "한라산 정상에서",
+  },
 ];
 
 export default function AlbumMainScreen() {
@@ -78,11 +95,8 @@ export default function AlbumMainScreen() {
   });
 
   return (
-    <View className="primary">
-      <ScrollView style={{ flex: 1 }}>
-        <AlbumTimeline data={data} />
-      </ScrollView>
-      
+    <View className="primary" style={{ flex: 1 }}>
+      <AlbumTimeline data={data} />
     </View>
   );
 }

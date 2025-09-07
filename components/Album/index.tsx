@@ -1,4 +1,4 @@
-import { TimelineImage } from "./TimelineImage";
+import { TimelineImage } from "./AlbumImage";
 import { format, max, startOfDay } from "date-fns";
 import React, {
   ComponentProps,
@@ -97,13 +97,14 @@ export const AlbumTimeline = ({ data }: Props) => {
 
   const [contentWidth, setContentWidth] = useState(0);
 
-  const GAP = 8;
+  const GAP = Platform.OS == "web" ? 8 :4 ;
   const itemStyle = useMemo(() => {
     if (!contentWidth)
       return {
         width: 0,
-        marginRight: 2,
-        marginBottom: 2,
+        marginRight: GAP / 2,
+        marginLeft: GAP / 2,
+        marginBottom: GAP,
         class: `max-w-[0]`
       };
     // 행당 (N-1)개의 갭을 뺀 뒤 균등 분배
@@ -112,10 +113,11 @@ export const AlbumTimeline = ({ data }: Props) => {
     );
     return {
       width,
-      marginRight: 2,
-      marginBottom: 2,
+      marginRight: GAP / 2,
+      marginLeft: GAP / 2,
+      marginBottom: GAP,
     };
-  }, [contentWidth]);
+  }, [contentWidth, GAP, numColumns]);
 
   const renderSection = useCallback(
     ({ item: section }: { item: TimelineSection }) => (
@@ -123,7 +125,7 @@ export const AlbumTimeline = ({ data }: Props) => {
         <ThemedText className="mb-3 px-2 text-lg font-semibold">
           {format(new Date(section.date), "yyyy년 M월 d일")}
         </ThemedText>
-        <View className="w-full px-2">
+        <View className="w-full" style={{ paddingHorizontal: GAP / 2 }}>
           <FlatList
             extraData={itemStyle}
             onLayout={(e: LayoutChangeEvent) => {
@@ -133,8 +135,14 @@ export const AlbumTimeline = ({ data }: Props) => {
             data={section.items}
             renderItem={({ item: timelineItem, index }) => (
               <ThemedView
-                className={`flex md:m-1 lg:m-1`}
-                style={{width: itemStyle.width ,maxWidth:itemStyle.width}}
+                className={`flex`}
+                style={{
+                  width: itemStyle.width,
+                  maxWidth: itemStyle.width,
+                  marginRight: itemStyle.marginRight,
+                  marginLeft: itemStyle.marginLeft,
+                  marginBottom: itemStyle.marginBottom,
+                }}
               >
                 <TimelineImage
                   date={timelineItem.date}

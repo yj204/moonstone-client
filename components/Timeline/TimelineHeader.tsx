@@ -9,21 +9,22 @@ type Props = {
 };
 export default function TimelineHeader({ section }: Props) {
   return (
-    <Surface elevation={1} style={{ padding: 12, marginBottom: 10 }}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Text variant="titleMedium">{section.title}</Text>
-        <View style={{ flexDirection: "row", gap: 8 }}>
-          <Chip>{`${section.count}건`}</Chip>
-          <Chip>{`${section.totalMl} mL`}</Chip>
+    <View style={{ overflow: "hidden" }}>
+      <Surface elevation={1} style={{ padding: 12, marginBottom: 10 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text variant="titleMedium">{section.title}</Text>
+          <View style={{ flexDirection: "row", gap: 8 }}>
+            <Chip>{`${section.count}건`}</Chip>
+            <Chip>{`${section.totalMl} mL`}</Chip>
+          </View>
         </View>
-      </View>
-      <Divider style={{ marginTop: 8 }} />
-    </Surface>
+      </Surface>
+    </View>
   );
 }

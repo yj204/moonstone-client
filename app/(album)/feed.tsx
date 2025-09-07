@@ -1,5 +1,5 @@
 import { ThemedView } from "@/components/ThemedView";
-import { AlbumTimeline } from "@/components/AlbumTimeline";
+import { AlbumTimeline } from "@/components/Album";
 
 // 샘플 데이터 - 실제로는 API나 로컬 저장소에서 가져올 데이터
 const sampleData = [

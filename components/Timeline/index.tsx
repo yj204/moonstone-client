@@ -65,7 +65,10 @@ export default function TimelineView({ events }: Props) {
       keyExtractor={(item) => String(item.id)}
       renderSectionHeader={TimelineHeader}
       renderItem={TimelineItem}
-      
+      removeClippedSubviews
+      windowSize={5}
+      maxToRenderPerBatch={8}
+      stickySectionHeadersEnabled={false}
       contentContainerStyle={{ paddingBottom: 24 }}
       ListEmptyComponent={
         <ThemedView style={{ alignItems: "center", padding: 32 }}>

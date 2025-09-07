@@ -1,7 +1,7 @@
 import { usePaperTheme } from "@/theme/paperTheme";
 import { ThemedView } from "../ThemedView";
 import { Card, Chip, Text } from "react-native-paper";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import { ThemedText } from "../ThemedText";
 
@@ -43,50 +43,55 @@ export default function TimelineItem({ index, section, item }: Props) {
   return (
     <ThemedView style={{ flexDirection: "row", paddingHorizontal: 16 }}>
       {/* 타임라인 레일 */}
-      <View className="flex justify-center">
-        <Chip>{item.timeLabel}</Chip>
-      </View>
-      <ThemedView
-        style={{ alignItems: "center", marginRight: 12 , marginLeft: 12}}
-      >
-        {/* 위쪽 라인 */}
+      <ThemedView className="flex-row">
+        <View className="flex w-[80] justify-center items-center">
+          <Chip>{item.timeLabel}</Chip>
+        </View>
+        <ThemedView
+          style={{
+            width: 14, // 고정
+            alignItems: "center", // 가로 중앙
+            marginHorizontal: 12,
+            justifyContent: "center",
+          }}
+        >
+          {/* 위쪽 라인 (첫 요소면 렌더 X) */}
 
-        <ThemedView
-          style={{
-            width: 2,
-            flex: 1,
-            opacity: isFirst ? 0 : 1,
-            backgroundColor: theme.colors.outline,
-          }}
-        />
-        {/* 노드 */}
-        <ThemedView
-          style={{
-            width: 12,
-            height: 12,
-            borderRadius: 6,
-            backgroundColor: theme.colors.primary,
-            borderWidth: 2,
-            borderColor: theme.colors.surface,
-            shadowColor: theme.colors.primary,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.3,
-            shadowRadius: 4,
-            elevation: 3,
-          }}
-        />
-        {/* 아래쪽 라인 */}
+          <ThemedView
+            style={{
+              width: isFirst ? 0 : 2,
+              flex: 1,
+              backgroundColor: theme.colors.outline,
+            }}
+          />
 
-        <ThemedView
-          style={{
-            width: 2,
-            flex: 1,
-            opacity: isLast ? 0 : 1,
-            backgroundColor: theme.colors.outline,
-          }}
-        />
+          {/* 노드(짝수 크기 권장: 12) */}
+          <ThemedView
+            style={{
+              position: "absolute",
+              width: 12,
+              height: 12,
+              borderRadius: 6,
+              backgroundColor: theme.colors.primary,
+              borderWidth: 2,
+              borderColor: theme.colors.surface,
+              shadowColor: theme.colors.primary,
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.3,
+              shadowRadius: 4,
+              elevation: 3,
+            }}
+          />
+
+          <ThemedView
+            style={{
+              width: isLast ? 0 : 2,
+              flex: 1,
+              backgroundColor: theme.colors.outline,
+            }}
+          />
+        </ThemedView>
       </ThemedView>
-
       {/* 카드 */}
       <Card
         className="mb-2"
@@ -102,9 +107,6 @@ export default function TimelineItem({ index, section, item }: Props) {
           >
             <Text variant="titleMedium">
               {isFeeding ? `${item.amount_ml ?? 0} mL` : "배변"}
-            </Text>
-            <Text variant="labelMedium" style={{ opacity: 0.7 }}>
-              {item.timeLabel}
             </Text>
           </View>
 
