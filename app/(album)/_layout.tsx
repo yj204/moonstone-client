@@ -1,5 +1,5 @@
 
-import AlbumFAB from "@/components/AlbumFAB";
+import AlbumFAB from "@/components/Button/AlbumFAB";
 import { Stack, useNavigation } from "expo-router";
 
 export const screenOptions = {

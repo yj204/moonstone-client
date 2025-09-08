@@ -11,6 +11,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { subDays, subHours, startOfDay } from "date-fns";
 import { groupBy, pipe, sortBy } from "remeda";
 import  TimelineView  from "@/components/Timeline";
+import FeedingFAB from "@/components/Button/FeedingFAB";
 
 export type FeedEvent = {
   id: number;
@@ -101,6 +102,7 @@ export default function TabLayout() {
   return (
     <ThemedView className="h-full">
       <TimelineView events={feedingExample}/>
+      <FeedingFAB/>
     </ThemedView> 
   );
 }

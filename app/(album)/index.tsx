@@ -1,4 +1,4 @@
-import AlbumFAB from "@/components/AlbumFAB";
+import AlbumFAB from "@/components/Button/AlbumFAB";
 import { AlbumTimeline } from "@/components/Album";
 import { useMaterialTheme } from '@/hooks/useMaterialColor';
 import { View } from "react-native";

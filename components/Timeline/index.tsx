@@ -1,19 +1,14 @@
-import React, { useMemo, useCallback } from "react";
-import { View, SectionList } from "react-native";
-import {
-  Card,
-  Text,
-  Divider,
-  Chip,
-  useTheme,
-  Surface,
-} from "react-native-paper";
+import { usePaperTheme } from "@/theme/paperTheme";
 import { format, parseISO } from "date-fns";
 import { ko } from "date-fns/locale";
+import React, { useMemo } from "react";
+import { SectionList } from "react-native";
+import {
+  Text
+} from "react-native-paper";
 import { ThemedView } from "../ThemedView";
-import { usePaperTheme } from "@/theme/paperTheme";
-import TimelineItem, { FeedEvent, Section, SectionItem } from "./TimelineItem";
 import TimelineHeader from "./TimelineHeader";
+import TimelineItem, { FeedEvent, Section, SectionItem } from "./TimelineItem";
 
 type Props = {
   events: any[]; // FeedEvent | DiaperEvent
