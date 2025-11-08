@@ -1,22 +1,20 @@
-import { TimelineImage } from "./AlbumImage";
-import { format, max, startOfDay } from "date-fns";
-import React, {
-  ComponentProps,
-  PropsWithChildren,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { format, startOfDay } from "date-fns";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
-  Dimensions,
   FlatList,
+  Image,
   LayoutChangeEvent,
-  Text,
+  Modal,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  Pressable,
   View,
+  useWindowDimensions,
 } from "react-native";
-import { ThemedView } from "../ThemedView";
-import { Platform } from "react-native";
 import { ThemedText } from "../ThemedText";
+import { ThemedView } from "../ThemedView";
+import { TimelineImage } from "./AlbumImage";
 
 type Props = {
   data: {
@@ -96,6 +94,9 @@ export const AlbumTimeline = ({ data }: Props) => {
   }, [data]);
 
   const [contentWidth, setContentWidth] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const { width: windowWidth } = useWindowDimensions();
+  const lightboxListRef = useRef<FlatList<Props["data"][number]>>(null);
 
   const GAP = Platform.OS == "web" ? 8 :4 ;
   const itemStyle = useMemo(() => {
@@ -118,6 +119,24 @@ export const AlbumTimeline = ({ data }: Props) => {
       marginBottom: GAP,
     };
   }, [contentWidth, GAP, numColumns]);
+
+  const flatItems = useMemo(
+    () =>
+      timelineSections.flatMap((section) =>
+        section.items.map((item) => ({
+          ...item,
+        })),
+      ),
+    [timelineSections],
+  );
+
+  const idToIndex = useMemo(() => {
+    const map = new Map<string, number>();
+    flatItems.forEach((item, index) => {
+      map.set(item.id.toString(), index);
+    });
+    return map;
+  }, [flatItems]);
 
   const renderSection = useCallback(
     ({ item: section }: { item: TimelineSection }) => (
@@ -148,6 +167,12 @@ export const AlbumTimeline = ({ data }: Props) => {
                   date={timelineItem.date}
                   caption={timelineItem.caption}
                   image={timelineItem.image}
+                  onPress={() => {
+                    const index = idToIndex.get(timelineItem.id.toString());
+                    if (index !== undefined) {
+                      setLightboxIndex(index);
+                    }
+                  }}
                 />
               </ThemedView>
             )}
@@ -159,21 +184,95 @@ export const AlbumTimeline = ({ data }: Props) => {
         </View>
       </ThemedView>
     ),
-    [itemStyle.width],
+    [idToIndex, itemStyle],
+  );
+
+  const getItemLayout = useCallback(
+    (_: unknown, index: number) => ({
+      length: windowWidth,
+      offset: windowWidth * index,
+      index,
+    }),
+    [windowWidth],
+  );
+
+  const handleLightboxScroll = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const nextIndex = Math.round(event.nativeEvent.contentOffset.x / windowWidth);
+      if (!Number.isNaN(nextIndex) && nextIndex !== lightboxIndex) {
+        setLightboxIndex(nextIndex);
+      }
+    },
+    [lightboxIndex, windowWidth],
+  );
+
+  const closeLightbox = useCallback(() => {
+    setLightboxIndex(null);
+  }, []);
+
+  const renderLightbox = () => (
+    <Modal
+      animationType="fade"
+      visible={lightboxIndex !== null}
+      transparent
+      onRequestClose={closeLightbox}
+    >
+      <View className="flex-1 bg-black/90">
+        <Pressable
+          className="absolute left-4 top-16 z-10 rounded-full bg-black/60 px-4 py-2"
+          onPress={closeLightbox}
+          hitSlop={16}
+        >
+          <ThemedText className="text-white">닫기</ThemedText>
+        </Pressable>
+        {lightboxIndex !== null && (
+          <FlatList
+            ref={lightboxListRef}
+            horizontal
+            pagingEnabled
+            data={flatItems}
+            keyExtractor={(item) => item.id.toString()}
+            initialScrollIndex={lightboxIndex}
+            getItemLayout={getItemLayout}
+            onMomentumScrollEnd={handleLightboxScroll}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <View className="h-full w-screen items-center justify-center">
+                <Image
+                  source={{ uri: item.image }}
+                  className="h-full w-full"
+                  resizeMode="contain"
+                />
+                {item.caption && (
+                  <View className="absolute bottom-10 px-6">
+                    <ThemedText className="text-center text-white">
+                      {item.caption}
+                    </ThemedText>
+                  </View>
+                )}
+              </View>
+            )}
+          />
+        )}
+      </View>
+    </Modal>
   );
 
   return (
-    <ThemedView className="w-full flex-1 px-2 py-6">
-      <FlatList
-        className="w-full"
-        data={timelineSections}
-        keyExtractor={(item) => item.date}
-        renderItem={renderSection}
-        initialNumToRender={initialNumToRender}
-        maxToRenderPerBatch={maxToRenderPerBatch}
-        windowSize={windowSize}
-        showsVerticalScrollIndicator={false}
-      />
-    </ThemedView>
+    <>
+      <ThemedView className="w-full flex-1 px-2 py-6">
+        <FlatList
+          className="w-full"
+          data={timelineSections}
+          keyExtractor={(item) => item.date}
+          renderItem={renderSection}
+          initialNumToRender={initialNumToRender}
+          maxToRenderPerBatch={maxToRenderPerBatch}
+          windowSize={windowSize}
+          showsVerticalScrollIndicator={false}
+        />
+      </ThemedView>
+      {renderLightbox()}
+    </>
   );
 };

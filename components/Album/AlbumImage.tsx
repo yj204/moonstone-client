@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Image, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 type Props = {
   date: Date | string;
   image: any;
   caption?: string;
+  onPress?: () => void;
 };
 
 import Animated, {
@@ -12,7 +13,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-export const TimelineImage = ({ date, image, caption }: Props) => {
+export const TimelineImage = ({ date, image, caption, onPress }: Props) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const opacity = useSharedValue(0)
   const offset = useSharedValue(20)
@@ -34,22 +35,23 @@ export const TimelineImage = ({ date, image, caption }: Props) => {
   }, [imageLoaded])
 
   const handleImageLoad = () => {
-    
     setImageLoaded(true);
   };
 
   return (
-    <Animated.View 
-      style={animatedStyle} 
+    <Animated.View
+      style={animatedStyle}
       className=""
     >
       <View className="rounded-sm overflow-hidden shadow-md">
-        <Image 
-          source={{uri:image}} 
-          className="w-full aspect-square"
-          resizeMode="cover"
-          onLoad={handleImageLoad}
-        />
+        <Pressable onPress={onPress}>
+          <Image
+            source={{ uri: image }}
+            className="w-full aspect-square"
+            resizeMode="cover"
+            onLoad={handleImageLoad}
+          />
+        </Pressable>
       </View>
     </Animated.View>
   );

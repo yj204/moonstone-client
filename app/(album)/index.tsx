@@ -82,6 +82,17 @@ const data = [
     image: "https://picsum.photos/200/300",
     // caption: "한라산 정상에서",
   },
+  {
+    id: "14",
+    date: "2025-08-06",
+    image: "https://picsum.photos/300/200",
+    // caption: "한라산 정상에서",
+  },
+  {
+    id: "15",
+    date: "2025-08-06",
+    image: "https://picsum.photos/300/300",
+  }
 ];
 
 export default function AlbumMainScreen() {
