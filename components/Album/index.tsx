@@ -1,17 +1,18 @@
 import { format, startOfDay } from "date-fns";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   FlatList,
   Image,
   LayoutChangeEvent,
   Modal,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
   Platform,
   Pressable,
   View,
   useWindowDimensions,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import Carousel from "react-native-reanimated-carousel";
+import type { CarouselRenderItem } from "react-native-reanimated-carousel";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { TimelineImage } from "./AlbumImage";
@@ -95,10 +96,9 @@ export const AlbumTimeline = ({ data }: Props) => {
 
   const [contentWidth, setContentWidth] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const { width: windowWidth } = useWindowDimensions();
-  const lightboxListRef = useRef<FlatList<Props["data"][number]>>(null);
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
 
-  const GAP = Platform.OS == "web" ? 8 :4 ;
+  const GAP = Platform.OS == "web" ? 8 : 4;
   const itemStyle = useMemo(() => {
     if (!contentWidth)
       return {
@@ -106,7 +106,7 @@ export const AlbumTimeline = ({ data }: Props) => {
         marginRight: GAP / 2,
         marginLeft: GAP / 2,
         marginBottom: GAP,
-        class: `max-w-[0]`
+        class: `max-w-[0]`,
       };
     // 행당 (N-1)개의 갭을 뺀 뒤 균등 분배
     const width = Math.floor(
@@ -187,25 +187,6 @@ export const AlbumTimeline = ({ data }: Props) => {
     [idToIndex, itemStyle],
   );
 
-  const getItemLayout = useCallback(
-    (_: unknown, index: number) => ({
-      length: windowWidth,
-      offset: windowWidth * index,
-      index,
-    }),
-    [windowWidth],
-  );
-
-  const handleLightboxScroll = useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const nextIndex = Math.round(event.nativeEvent.contentOffset.x / windowWidth);
-      if (!Number.isNaN(nextIndex) && nextIndex !== lightboxIndex) {
-        setLightboxIndex(nextIndex);
-      }
-    },
-    [lightboxIndex, windowWidth],
-  );
-
   const closeLightbox = useCallback(() => {
     setLightboxIndex(null);
   }, []);
@@ -219,39 +200,50 @@ export const AlbumTimeline = ({ data }: Props) => {
     >
       <View className="flex-1 bg-black/90">
         <Pressable
-          className="absolute left-4 top-16 z-10 rounded-full bg-black/60 px-4 py-2"
+          className="absolute inset-0"
           onPress={closeLightbox}
-          hitSlop={16}
+          pointerEvents="box-none"
+        />
+        <Pressable
+          className="absolute right-4 top-12 z-50 rounded-full bg-black/60 p-2"
+          onPress={closeLightbox}
+          hitSlop={8}
         >
-          <ThemedText className="text-white">닫기</ThemedText>
+          <Ionicons name="close" size={24} color="white" />
         </Pressable>
         {lightboxIndex !== null && (
-          <FlatList
-            ref={lightboxListRef}
-            horizontal
-            pagingEnabled
+          <Carousel
+            width={windowWidth}
+            height={windowHeight}
             data={flatItems}
-            keyExtractor={(item) => item.id.toString()}
-            initialScrollIndex={lightboxIndex}
-            getItemLayout={getItemLayout}
-            onMomentumScrollEnd={handleLightboxScroll}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
+            defaultIndex={lightboxIndex}
+            loop={false}
+            onSnapToItem={(index: number) => {
+              if (index !== lightboxIndex) {
+                setLightboxIndex(index);
+              }
+            }}
+            renderItem={(({ item }: { item: Props["data"][number] }) => (
               <View className="h-full w-screen items-center justify-center">
-                <Image
-                  source={{ uri: item.image }}
-                  className="h-full w-full"
-                  resizeMode="contain"
-                />
-                {item.caption && (
-                  <View className="absolute bottom-10 px-6">
-                    <ThemedText className="text-center text-white">
-                      {item.caption}
-                    </ThemedText>
-                  </View>
-                )}
+                <Pressable
+                  className="h-full w-full items-center justify-center"
+                  onPress={() => {}}
+                >
+                  <Image
+                    source={{ uri: item.image }}
+                    className="h-full w-full"
+                    resizeMode="contain"
+                  />
+                  {item.caption && (
+                    <View className="absolute bottom-10 px-6">
+                      <ThemedText className="text-center text-white">
+                        {item.caption}
+                      </ThemedText>
+                    </View>
+                  )}
+                </Pressable>
               </View>
-            )}
+            )) as CarouselRenderItem<Props["data"][number]>}
           />
         )}
       </View>

@@ -1,16 +1,16 @@
 import { Text, type TextProps } from "react-native";
-// import { Text } from "react-native-paper";
+import { cssInterop } from "nativewind";
 import { MD3Colors } from "react-native-paper/lib/typescript/types";
 
 import { useMaterialColor } from "@/hooks/useMaterialColor";
-
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
   title?: string;
   colorName?: keyof MD3Colors;
-} 
+  className?: string;
+};
 
 export function ThemedText({
   style,
@@ -29,3 +29,9 @@ export function ThemedText({
     />
   );
 }
+
+cssInterop(ThemedText, {
+  className: {
+    target: "style",
+  },
+});
