@@ -32,9 +32,10 @@ type Props = {
   item: SectionItem;
   index: number;
   section: Section;
+  onPress?: (item: SectionItem) => void;
 };
 
-export default function TimelineItem({ index, section, item }: Props) {
+export default function TimelineItem({ index, section, item, onPress }: Props) {
   const isLast = index === section.data.length - 1;
   const isFirst = index === 0;
   const isFeeding = item.type === "feeding";
@@ -96,6 +97,7 @@ export default function TimelineItem({ index, section, item }: Props) {
       <Card
         className="mb-2"
         style={{ flex: 1, marginBottom: 10, marginTop: 10 }}
+        onPress={onPress ? () => onPress(item) : undefined}
       >
         <Card.Content style={{ paddingVertical: 12 }}>
           <View
@@ -120,6 +122,13 @@ export default function TimelineItem({ index, section, item }: Props) {
             >
               {isFeeding ? "수유" : "배변"}
             </Chip>
+            {!isFeeding && (item as any).diaperType && (
+              <Chip compact>
+                {(item as any).diaperType === "normal" ? "정상" : 
+                 (item as any).diaperType === "constipation" ? "변비" : 
+                 (item as any).diaperType === "diarrhea" ? "설사" : ""}
+              </Chip>
+            )}
             {isFeeding && item.duration != null && (
               <Chip compact>{`${item.duration}분`}</Chip>
             )}

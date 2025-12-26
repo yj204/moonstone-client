@@ -12,6 +12,7 @@ import TimelineItem, { FeedEvent, Section, SectionItem } from "./TimelineItem";
 
 type Props = {
   events: any[]; // FeedEvent | DiaperEvent
+  onItemPress?: (item: SectionItem) => void;
 };
 
 function buildSections(raw: FeedEvent[]): Section[] {
@@ -49,17 +50,20 @@ function buildSections(raw: FeedEvent[]): Section[] {
   return sections;
 }
 
-export default function TimelineView({ events }: Props) {
+export default function TimelineView({ events, onItemPress }: Props) {
   const theme = usePaperTheme();
   const sections = useMemo<Section[]>(() => buildSections(events), [events]);
 
+  const renderItem = ({ item, index, section }: { item: SectionItem; index: number; section: Section }) => {
+    return <TimelineItem item={item} index={index} section={section} onPress={onItemPress} />;
+  };
 
   return (
     <SectionList
       sections={sections}
       keyExtractor={(item) => String(item.id)}
       renderSectionHeader={TimelineHeader}
-      renderItem={TimelineItem}
+      renderItem={renderItem}
       removeClippedSubviews
       windowSize={5}
       maxToRenderPerBatch={8}
