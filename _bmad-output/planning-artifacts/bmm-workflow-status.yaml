@@ -1,0 +1,8 @@
+# BMAD BMM workflow status tracker
+# This file is managed by workflows to track latest output locations.
+workflow_status:
+  product-brief:
+    path: "_bmad-output/planning-artifacts/product-brief-moonstonebaby-client-2026-01-20.md"
+    completed_at: "2026-01-21"
+    project_name: "moonstonebaby-client"
+    author: "wooa"
